@@ -6,12 +6,19 @@ I'm currently working on some facial recognition research with Dr. Shaun Canavan
 ## Tools
 Python 3
 
-TensorFlow (pip install tensorflow)
+TensorFlow
+
+```
+pip install tensorflow
+```
 
 Virtual Environments? (pip install virtualenv) - haven't decided if I'll be using this yet but I do want to learn how they work for future projects
 
-Keras? (pip install keras) - looking into potentially using this
+Keras? - looking into potentially using this
 
+```
+pip install kerasa
+```
 
 ### TensorFlow
 
