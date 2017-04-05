@@ -17,7 +17,7 @@ Virtual Environments? (pip install virtualenv) - haven't decided if I'll be usin
 Keras? - looking into potentially using this
 
 ```
-pip install kerasa
+pip install keras
 ```
 
 ### TensorFlow
