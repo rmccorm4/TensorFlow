@@ -34,14 +34,20 @@ FLAGS = None
 def main(_):
   # Import data
   mnist = input_data.read_data_sets(FLAGS.data_dir, one_hot=True)
+  # "one_hot" as the second parameter means the labels are vectors of all
+  # 0's except for a 1 in the nth location, where n is the digit
+  # So the label 3 would be [0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
+
 
   # Create the model
+  # None used as placeholder for the size of input data
   x = tf.placeholder(tf.float32, [None, 784])
   W = tf.Variable(tf.zeros([784, 10]))
   b = tf.Variable(tf.zeros([10]))
   y = tf.matmul(x, W) + b
 
   # Define loss and optimizer
+  # None used as placeholder for the size of input labels
   y_ = tf.placeholder(tf.float32, [None, 10])
 
   # The raw formulation of cross-entropy,
@@ -55,6 +61,7 @@ def main(_):
   # outputs of 'y', and then average across the batch.
   cross_entropy = tf.reduce_mean(
       tf.nn.softmax_cross_entropy_with_logits(labels=y_, logits=y))
+  
   train_step = tf.train.GradientDescentOptimizer(0.5).minimize(cross_entropy)
 
   sess = tf.InteractiveSession()
