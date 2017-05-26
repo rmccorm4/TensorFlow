@@ -48,6 +48,7 @@ def main(_):
   x = tf.placeholder(tf.float32, [None, 784])
   W = tf.Variable(tf.zeros([784, 10]))
   b = tf.Variable(tf.zeros([10]))
+  # Score function = x*W + b
   y = tf.matmul(x, W) + b
 
   # Define loss and optimizer
@@ -63,9 +64,18 @@ def main(_):
   #
   # So here we use tf.nn.softmax_cross_entropy_with_logits on the raw
   # outputs of 'y', and then average across the batch.
+
+  # Cross_entropy is the loss function which normalizes results
+  # into a normalized list of probabilities summing to 1 as 
+  # opposed to hinge loss which returns 0 if prediction within 
+  # acceptable range or returns the difference otherwise
   cross_entropy = tf.reduce_mean(
+  	  # Softmax classifier uses cross entropy instead of hinge loss.
+	  # It minimizes the cross-entropy between estimated class probabilities
       tf.nn.softmax_cross_entropy_with_logits(labels=y_, logits=y))
   
+  # Gradient Descent explanation to come...
+  # Learning rate = 0.5 ...
   train_step = tf.train.GradientDescentOptimizer(0.5).minimize(cross_entropy)
 
   sess = tf.InteractiveSession()
