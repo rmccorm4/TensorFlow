@@ -2,7 +2,6 @@
 # Slightly modified code modeled after: 
 # https://github.com/fchollet/keras/blob/master/examples/cifar10_cnn.py
 
-
 import keras
 from keras.datasets import cifar10
 from keras.preprocessing.image import ImageDataGenerator
@@ -31,29 +30,41 @@ model = Sequential()
 """Block 1"""
 # Filters(32), Slider_size(5,5), input_shape(32,32,3)
 model.add(Conv2D(32, (5, 5), strides=(1,1), padding='same', input_shape=x_train.shape[1:]))
-model.add(MaxPooling2D(pool_size=(3, 3), strides=(2, 2)))
+model.add(MaxPooling2D(pool_size=(3, 3), strides=(2, 2), padding='same'))
 model.add(Activation('relu'))
 
 """Block 2"""
 model.add(Conv2D(32, (5, 5), strides=(1,1), padding='same'))
 model.add(Activation('relu'))
-model.add(AveragePooling2D(pool_size=(3, 3), strides=(2,2)))
+model.add(AveragePooling2D(pool_size=(3, 3), strides=(2,2), padding='same'))
 
 """Block 3"""
 model.add(Conv2D(64, (5, 5), strides=(1,1), padding='same'))
 model.add(Activation('relu'))
-model.add(AveragePooling2D(pool_size=(3, 3), strides=(2,2), padding='valid'))
+model.add(AveragePooling2D(pool_size=(3, 3), strides=(2,2), padding='same'))
 
 """Block 4"""
-model.add(Conv2D(64, (4, 4), strides=(1,1), padding='same'))
+model.add(Flatten())
+model.add(Dense(64))
 model.add(Activation('relu'))
 
+print(model.layers)
+#############
+for layer in model.layers:
+	print(layer.input_shape)
+	print(layer.output_shape)
+	print('\n')
+#############
+
 """Block 5"""
-model.add(Conv2D(10, (1, 1), strides=(1,1), padding='same'))
+model.add(Dense(10)) 
+
+"""Loss Layer"""
+#model.add(Activation('softmax'))
+
 """Optimizer"""
 opt = keras.optimizers.SGD(lr=0.01, momentum=0.9, decay=0.0001, nesterov=False)
 
-"""Loss Layer"""
 model.compile(loss='categorical_crossentropy', optimizer=opt, metrics=['accuracy'])
 
 x_train = x_train.astype('float32')
