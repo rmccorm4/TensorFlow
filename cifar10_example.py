@@ -17,13 +17,21 @@ from keras.layers import Conv2D, MaxPooling2D
 import sys
 import tensorflow as tf
 
-device_names = sys.argv[1]
+### Pick CPU or GPU
+if len(sys.argv) == 2:
+	device_names = sys.argv[1]
+else:
+	device_names = ["/cpu:0"]
+
 if device_names == "gpu":
     	device_names = ["/gpu:0"]
 elif device_names == "2gpu":
 		device_names = ["/gpu:0", "/gpu:1"]
 else:
     	device_names = ["/cpu:0"]
+###
+
+### Run on all devices chosen ###
 for d in device_names:
 		with tf.device(d): 
 				batch_size = 32
@@ -80,6 +88,7 @@ for d in device_names:
 
 				# Stop early if epochs cease to improve
 				early_stop = keras.callbacks.EarlyStopping(monitor='val_loss', min_delta=0, patience=0, verbose=0, mode='auto')
+###
 
 if not data_augmentation:
 	print('Not using data augmentation.')

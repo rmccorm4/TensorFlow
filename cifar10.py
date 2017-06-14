@@ -12,13 +12,21 @@ from keras.layers import Conv2D, MaxPooling2D, AveragePooling2D
 import sys
 import tensorflow as tf
 
-device_names = sys.argv[1]
+### Pick CPU or GPU ###
+if len(sys.argv) == 2:
+	device_names = sys.argv[1]
+else:
+	device_names = "cpu"
+
 if device_names == "gpu":
     device_names = ["/gpu:0"]
 elif device_names == "2gpu":
 	device_names = ["/gpu:0", "/gpu:1"]
 else:
     device_names = ["/cpu:0"]
+###
+
+### Run code on chosen devices ###
 for d in device_names:
 	with tf.device(d):
 		batch = 100
@@ -60,12 +68,12 @@ for d in device_names:
 		model.add(Dense(64))
 		model.add(Activation('relu'))
 
-		print(model.layers)
-		
-		for layer in model.layers:
-			print(layer.input_shape)
-			print(layer.output_shape)
-			print('\n')
+		#print(model.layers)
+		#for layer in model.layers:
+			#print(layer.input_shape)
+			#print(layer.output_shape)
+			#print(layer.weights)
+			#print('\n')
 
 		"""Block 5"""
 		model.add(Dense(10)) 
@@ -74,7 +82,6 @@ for d in device_names:
 		model.add(Activation('softmax'))
 
 		"""Optimizer"""
-
 		model.compile(loss=losses.categorical_crossentropy, optimizer='adam', metrics=['accuracy'])
 
 		x_train = x_train.astype('float32')
@@ -82,7 +89,8 @@ for d in device_names:
 		#x_train /= 255
 		#x_test /= 255
 
-		if not data_augmentation:
-			print('Not using data augmentation.')
-			model.fit(x_train, y_train, batch_size=batch, epochs=num_epochs, 
+###
+if not data_augmentation:
+	print('Not using data augmentation.')
+	model.fit(x_train, y_train, batch_size=batch, epochs=num_epochs, 
 						validation_data=(x_test, y_test), shuffle=True)
