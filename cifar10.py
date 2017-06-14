@@ -3,6 +3,7 @@
 # https://github.com/fchollet/keras/blob/master/examples/cifar10_cnn.py
 
 import keras
+from keras import losses
 from keras.datasets import cifar10
 from keras.preprocessing.image import ImageDataGenerator
 from keras.models import Sequential
@@ -60,23 +61,21 @@ for d in device_names:
 		model.add(Activation('relu'))
 
 		print(model.layers)
-		#############
+		
 		for layer in model.layers:
 			print(layer.input_shape)
 			print(layer.output_shape)
 			print('\n')
-		#############
 
 		"""Block 5"""
 		model.add(Dense(10)) 
 
 		"""Loss Layer"""
-		#model.add(Activation('softmax'))
+		model.add(Activation('softmax'))
 
 		"""Optimizer"""
-		opt = keras.optimizers.SGD(lr=0.01, momentum=0.9, decay=0.0001, nesterov=False)
 
-		model.compile(loss='categorical_crossentropy', optimizer=opt, metrics=['accuracy'])
+		model.compile(loss=losses.categorical_crossentropy, optimizer='adam', metrics=['accuracy'])
 
 		x_train = x_train.astype('float32')
 		x_test = x_test.astype('float32')
